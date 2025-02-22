@@ -24,6 +24,7 @@ st.title("🔎 LangChain - Chat with search")
 In this example, we're using `StreamlitCallbackHandler` to display the thoughts and actions of an agent in an interactive Streamlit app.
 Try more LangChain 🤝 Streamlit Agent examples at [github.com/langchain-ai/streamlit-agent](https://github.com/langchain-ai/streamlit-agent).
 """
+st.markdown("link to the hf space [app](https://huggingface.co/spaces/Mohamedsheded33/search-engine-llm)")
 
 ## Sidebar for settings
 st.sidebar.title("Settings")
