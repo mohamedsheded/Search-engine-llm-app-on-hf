@@ -110,6 +110,7 @@ This guide explains how to deploy your Streamlit app on [Streamlit Cloud](https:
 ## 2. Deploying Your App on Hugging Face Spaces
 
 Hugging Face Spaces provides an easy way to deploy machine learning models and apps using frameworks like Streamlit, Gradio, and FastAPI. Follow these steps to deploy your app on Hugging Face Spaces.
+[app-here](https://huggingface.co/spaces/Mohamedsheded33/search-engine-llm)
 
 ### 2.1 Create a Hugging Face Account
 
