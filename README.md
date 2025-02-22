@@ -14,7 +14,8 @@ short_description: a sample llm app for deploying on HF spaces
 # Deployment-for-simple-apps
 deployment of LLM apps in various spaces (Streamlit, Hugging Face Spaces)
 
-## 1. Deploying Your Streamlit App on Streamlit Cloud
+## 1. Deploying Your Streamlit App on Streamlit Cloud 
+[try-app-here](https://deployment-for-simple-apps-d9dyk3fvonxzk2tgvvzems.streamlit.app/)
 
 This guide explains how to deploy your Streamlit app on [Streamlit Cloud](https://share.streamlit.io/) using your GitHub repository. Follow these detailed steps to get your app online and share it with the world.
 
@@ -28,6 +29,12 @@ This guide explains how to deploy your Streamlit app on [Streamlit Cloud](https:
   - [1.4 Verify and Share Your Deployed App](#14-verify-and-share-your-deployed-app)
   - [1.5 Additional Tips](#15-additional-tips)
 - [2. Deploying Your App on Hugging Face Spaces](#2-deploying-your-app-on-hugging-face-spaces)
+  - [2.1 Create a Hugging Face Account](#21-create-a-hugging-face-account)
+  - [2.2 Configure Your Space](#22-configure-your-space)
+  - [2.3 Upload Your Files](#23-upload-your-files)
+  - [2.4 Deploy Your App](#24-deploy-your-app)
+  - [2.5 Sync Your GitHub Repository to Hugging Face Using GitHub Actions](#25-sync-your-github-repository-to-hugging-face-using-github-actions)
+  - [2.6 Monitor and Update](#26-monitor-and-update)
 
 ---
 
@@ -95,9 +102,6 @@ This guide explains how to deploy your Streamlit app on [Streamlit Cloud](https:
 - **Use a `secrets.toml` File for Credentials:**  
   Store API keys and sensitive data securely using the Streamlit Cloud secrets management feature.
 
-- **Enable Caching for Performance:**  
-  Use `@st.cache` or `st.experimental_memo` to optimize app performance.
-
 - **Monitor App Usage:**  
   Check Streamlit Cloud’s analytics to monitor user interactions.
 
@@ -129,11 +133,62 @@ Hugging Face Spaces provides an easy way to deploy machine learning models and a
 - Once the files are uploaded, Hugging Face will automatically build and deploy your app.
 - You will receive a public URL where users can access your app.
 
-### 2.5 Monitor and Update
+### 2.5 Sync Your GitHub Repository to Hugging Face Using GitHub Actions
+
+To keep your Hugging Face Space updated with changes from your GitHub repository, you can set up a GitHub Action workflow.
+
+#### **Step 1: Create a GitHub Action Workflow**
+
+1. In your GitHub repository, navigate to `.github/workflows/` (create the folders if they don’t exist).
+2. Create a new file named `huggingface-sync.yml`.
+3. Add the following content to the file:
+
+```yaml
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches:
+      - main  # Adjust this if your branch is different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          SPACE_NAME: your-space-name
+        run: |
+          git remote add huggingface https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$SPACE_NAME
+          git push huggingface main --force
+```
+
+#### **Step 2: Set Up Hugging Face Secrets in GitHub**
+
+1. Go to your GitHub repository’s **Settings** > **Secrets and variables** > **Actions**.
+2. Click **New repository secret** and add the following:
+   - `HF_USERNAME`: Your Hugging Face username.
+   - `HF_TOKEN`: Your Hugging Face API token (get it from [Hugging Face settings](https://huggingface.co/settings/tokens)).
+   - `SPACE_NAME`: The name of your Hugging Face Space.
+
+#### **Step 3: Push Changes to Trigger the Action**
+Whenever you push a new commit to your repository, this workflow will automatically update your Hugging Face Space.
+
+By following these steps, you ensure that your Hugging Face Space always stays in sync with your GitHub repository without manual updates.
+
+---
+
+
+
+### 2.6 Monitor and Update
 
 - Check logs for errors and debugging.
 - Update your files and commit changes to reflect updates in your Space.
-
-By following these steps, you can deploy your apps seamlessly on Streamlit Cloud and Hugging Face Spaces.
 
 
